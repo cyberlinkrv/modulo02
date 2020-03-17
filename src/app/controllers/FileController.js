@@ -8,7 +8,7 @@ class FileController {
       name,
       path,
     });
-    return res.json(file);
+    return res.json(file); // teste
   }
 }
 
