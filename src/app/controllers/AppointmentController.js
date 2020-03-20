@@ -65,7 +65,7 @@ class AppointmentController {
      * Check for past date
      */
     if (isBefore(hourStart, new Date())) {
-      return res.status(400).json({ error: 'Past dates are not permitted' });
+      return res.status(400).json({ error: `Past dates are not permitted` });
     }
 
     /**
@@ -86,7 +86,7 @@ class AppointmentController {
     if (checkAvailability) {
       return res
         .status(400)
-        .json({ error: 'Appointment date is not available' });
+        .json({ error: `Appointment date is not available` });
     }
 
     const appointment = await Appointment.create({
@@ -99,6 +99,7 @@ class AppointmentController {
      * Notificar prestador de serviço
      */
     const user = await User.findByPk(req.userId);
+
     const formattedDate = format(
       hourStart,
       "'dia' dd 'de' MMMM', as' H:mm'h' ",
