@@ -109,7 +109,7 @@ class AppointmentController {
 
     const formattedDate = format(
       hourStart,
-      "'dia' dd 'de' MMMM', as' H:mm'h' ",
+      "'dia' dd 'de' MMMM', às' H:mm'h' ",
       { locale: Pt }
     );
 
@@ -128,6 +128,11 @@ class AppointmentController {
           model: User,
           as: 'provider',
           attributes: ['name', 'email'],
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
         },
       ],
     });
@@ -165,7 +170,18 @@ class AppointmentController {
     await Mail.sendMail({
       to: `${appointment.provider.name} <${appointment.provider.email}>`,
       subject: 'Agendamento cancelado',
-      text: 'Você tem um novo cancelamento',
+      template: 'cancellation' /** Aqui passo o templaite que estou usando */,
+      context: {
+        /** Aqui dentro do context vou enviar para o template todas as variaveis
+        que ele esta esperando: quando declaro provider abaixo estou fazendo
+        referencia a variavel que esta no meu templaite e assim sucessivamente
+        a data estou formatando ela */
+        provider: appointment.provider.name,
+        user: appointment.user.name,
+        date: format(appointment.date, "'dia' dd 'de' MMMM', às' H:mm'h' ", {
+          locale: Pt,
+        }),
+      },
     });
 
     return res.json(appointment);
