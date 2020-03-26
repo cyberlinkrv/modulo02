@@ -3,14 +3,14 @@
  *vou usar o servidor do Mailtrap porque fincuona so em ambiente DEV
  */
 export default {
-  host: 'smtp.mailtrap.io',
-  port: '2525',
-  secure: false,
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  secure: process.env.MAIL_SECURE,
   auth: {
-    user: '3d9d4572f640a4',
-    pass: '7bc76d2f3a82a8',
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
   },
   default: {
-    from: 'Equipe GoBarber <noreplay@gobarber.com>',
+    from: process.env.MAIL_FROM,
   },
 };
