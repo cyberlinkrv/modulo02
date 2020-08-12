@@ -224,9 +224,9 @@ SchemaString.prototype.enum = function() {
     errorMessage = MongooseError.messages.String.enum;
   }
 
-  for (let i = 0; i < values.length; i++) {
-    if (undefined !== values[i]) {
-      this.enumValues.push(this.cast(values[i]));
+  for (const value of values) {
+    if (value !== undefined) {
+      this.enumValues.push(this.cast(value));
     }
   }
 
@@ -515,6 +515,10 @@ SchemaString.prototype.match = function match(regExp, message) {
     if (!regExp) {
       return false;
     }
+
+    // In case RegExp happens to have `/g` flag set, we need to reset the
+    // `lastIndex`, otherwise `match` will intermittently fail.
+    regExp.lastIndex = 0;
 
     const ret = ((v != null && v !== '')
       ? regExp.test(v)
